@@ -1,0 +1,99 @@
+.small-container {
+  max-width: 540px;
+  margin: 40px auto;
+}
+
+.profile-card {
+  padding: 32px 24px;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.profile-avatar {
+  background-color: var(--primary-light);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--border-color);
+}
+
+.avatar-icon {
+  font-size: 36px;
+  width: 36px;
+  height: 36px;
+  color: var(--primary-color);
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.profile-info-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 8px;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 14px;
+}
+
+.info-label {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.info-val {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.profile-form {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.profile-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.btn-edit {
+  border-radius: 6px !important;
+  border-color: var(--primary-color) !important;
+  color: var(--primary-color) !important;
+  height: 40px !important;
+}
+
+.btn-edit:hover {
+  background-color: var(--primary-light) !important;
+}
+
+.btn-cancel {
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-secondary) !important;
+  border-radius: 6px !important;
+  padding: 8px 16px !important;
+}
+
+.btn-cancel:hover {
+  background-color: var(--primary-light) !important;
+}

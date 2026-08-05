@@ -1,0 +1,79 @@
+<div class="container small-container">
+  <mat-card class="premium-card form-card">
+    <mat-card-header>
+      <mat-card-title class="page-title">Fund Transfer</mat-card-title>
+      <mat-card-subtitle>Send money to another account instantly</mat-card-subtitle>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <div *ngIf="isLoadingAccounts" class="loading-box">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+
+      <div *ngIf="!isLoadingAccounts && accounts.length === 0" class="no-accounts-box">
+        <p>You have no active accounts available for transfers. Please open an account first.</p>
+        <button mat-raised-button color="primary" routerLink="/dashboard" class="btn-primary">Go to Dashboard</button>
+      </div>
+
+      <form [formGroup]="transferForm" (ngSubmit)="onSubmit()" *ngIf="!isLoadingAccounts && accounts.length > 0" class="transfer-form">
+        <!-- Sender Account Dropdown -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Source Account (Transfer From)</mat-label>
+          <mat-select formControlName="senderAccountNumber">
+            <mat-option *ngFor="let acc of accounts" [value]="acc.accountNumber">
+              {{ acc.accountNumber }} - {{ acc.accountType }} ({{ acc.balance | currency }})
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="transferForm.get('senderAccountNumber')?.hasError('required')">Source account is required</mat-error>
+        </mat-form-field>
+
+        <!-- Dynamic Limit Information Alert Card -->
+        <div class="info-alert" *ngIf="selectedSenderAccount">
+          <mat-icon class="info-icon">info</mat-icon>
+          <div class="info-content">
+            <span class="info-label">Available Transfer Limit:</span>
+            <span class="info-value">{{ getAvailableLimit() | currency }}</span>
+            <small class="info-note" *ngIf="selectedSenderAccount.accountType === 'SAVINGS'">
+              (Savings requires $100.00 minimum balance)
+            </small>
+            <small class="info-note" *ngIf="selectedSenderAccount.accountType === 'CURRENT'">
+              (Current allows overdraft up to $1,000.00)
+            </small>
+          </div>
+        </div>
+
+        <!-- Receiver Account Number -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Recipient Account Number (SAV-xxxxxxxxxx or CUR-xxxxxxxxxx)</mat-label>
+          <input matInput formControlName="receiverAccountNumber" placeholder="e.g. SAV-1000000003">
+          <mat-error *ngIf="transferForm.get('receiverAccountNumber')?.hasError('required')">Recipient account is required</mat-error>
+          <mat-error *ngIf="transferForm.get('receiverAccountNumber')?.hasError('pattern')">Invalid account number format (must match SAV-xxxxxxxxxx or CUR-xxxxxxxxxx)</mat-error>
+        </mat-form-field>
+
+        <!-- Amount -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Transfer Amount ($)</mat-label>
+          <input matInput type="number" formControlName="amount" placeholder="e.g. 250">
+          <mat-error *ngIf="transferForm.get('amount')?.hasError('required')">Amount is required</mat-error>
+          <mat-error *ngIf="transferForm.get('amount')?.hasError('min')">Amount must be greater than zero</mat-error>
+        </mat-form-field>
+
+        <!-- Description -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Description</mat-label>
+          <input matInput formControlName="description" placeholder="e.g. Payment for dinner, Rent credit">
+          <mat-error *ngIf="transferForm.get('description')?.hasError('maxlength')">Description too long (max 100 characters)</mat-error>
+        </mat-form-field>
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <button mat-button type="button" routerLink="/dashboard" class="btn-cancel">Cancel</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="transferForm.invalid || isSubmitting" class="btn-primary">
+            <span *ngIf="!isSubmitting">Transfer</span>
+            <mat-spinner diameter="20" *ngIf="isSubmitting"></mat-spinner>
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

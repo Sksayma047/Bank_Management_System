@@ -1,0 +1,56 @@
+<div class="container small-container">
+  <mat-card class="premium-card form-card">
+    <mat-card-header>
+      <mat-card-title class="page-title">Deposit Funds</mat-card-title>
+      <mat-card-subtitle>Add money to your account immediately</mat-card-subtitle>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <div *ngIf="isLoadingAccounts" class="loading-box">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+
+      <div *ngIf="!isLoadingAccounts && accounts.length === 0" class="no-accounts-box">
+        <p>You have no active accounts available for deposit. Please open an account first.</p>
+        <button mat-raised-button color="primary" routerLink="/dashboard" class="btn-primary">Go to Dashboard</button>
+      </div>
+
+      <form [formGroup]="depositForm" (ngSubmit)="onSubmit()" *ngIf="!isLoadingAccounts && accounts.length > 0" class="deposit-form">
+        <!-- Account Dropdown -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Select Account</mat-label>
+          <mat-select formControlName="accountNumber">
+            <mat-option *ngFor="let acc of accounts" [value]="acc.accountNumber">
+              {{ acc.accountNumber }} - {{ acc.accountType }} ({{ acc.balance | currency }})
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="depositForm.get('accountNumber')?.hasError('required')">Account is required</mat-error>
+        </mat-form-field>
+
+        <!-- Amount -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Deposit Amount ($)</mat-label>
+          <input matInput type="number" formControlName="amount" placeholder="e.g. 500">
+          <mat-error *ngIf="depositForm.get('amount')?.hasError('required')">Amount is required</mat-error>
+          <mat-error *ngIf="depositForm.get('amount')?.hasError('min')">Amount must be greater than zero</mat-error>
+        </mat-form-field>
+
+        <!-- Description -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Description</mat-label>
+          <input matInput formControlName="description" placeholder="e.g. Savings deposit, Cash deposit">
+          <mat-error *ngIf="depositForm.get('description')?.hasError('maxlength')">Description too long (max 100 characters)</mat-error>
+        </mat-form-field>
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <button mat-button type="button" routerLink="/dashboard" class="btn-cancel">Cancel</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="depositForm.invalid || isSubmitting" class="btn-primary">
+            <span *ngIf="!isSubmitting">Deposit</span>
+            <mat-spinner diameter="20" *ngIf="isSubmitting"></mat-spinner>
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

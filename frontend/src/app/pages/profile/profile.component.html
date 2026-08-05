@@ -1,0 +1,82 @@
+<div class="container small-container">
+  <mat-card class="premium-card profile-card">
+    <mat-card-header class="profile-header">
+      <div class="profile-avatar">
+        <mat-icon class="avatar-icon">person</mat-icon>
+      </div>
+      <div>
+        <mat-card-title class="page-title">Personal Profile</mat-card-title>
+        <mat-card-subtitle *ngIf="customer">Customer ID: #{{ customer.customerId }}</mat-card-subtitle>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div *ngIf="isLoading" class="loading-box">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+
+      <div *ngIf="!isLoading && customer" class="profile-info-section">
+        <!-- Read-only Info Row -->
+        <div class="info-row">
+          <span class="info-label">Member Since</span>
+          <span class="info-val">{{ customer.createdAt | date:'mediumDate' }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Date of Birth</span>
+          <span class="info-val">{{ customer.dateOfBirth | date:'longDate' }}</span>
+        </div>
+
+        <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-form">
+          <!-- Full Name -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Full Name</mat-label>
+            <input matInput formControlName="fullName">
+            <mat-error *ngIf="profileForm.get('fullName')?.hasError('required')">Name is required</mat-error>
+          </mat-form-field>
+
+          <!-- Email -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Email Address</mat-label>
+            <input matInput type="email" formControlName="email">
+            <mat-error *ngIf="profileForm.get('email')?.hasError('required')">Email is required</mat-error>
+            <mat-error *ngIf="profileForm.get('email')?.hasError('email')">Please enter a valid email address</mat-error>
+          </mat-form-field>
+
+          <!-- Phone -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Phone Number</mat-label>
+            <input matInput formControlName="phone">
+            <mat-error *ngIf="profileForm.get('phone')?.hasError('required')">Phone is required</mat-error>
+            <mat-error *ngIf="profileForm.get('phone')?.hasError('pattern')">Invalid phone format (10-15 digits)</mat-error>
+          </mat-form-field>
+
+          <!-- Address -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Address</mat-label>
+            <input matInput formControlName="address">
+            <mat-error *ngIf="profileForm.get('address')?.hasError('required')">Address is required</mat-error>
+          </mat-form-field>
+
+          <!-- Actions -->
+          <div class="profile-actions">
+            <!-- Edit Button -->
+            <button mat-stroked-button type="button" (click)="toggleEditMode()" class="btn-edit" *ngIf="!isEditMode">
+              <mat-icon>edit</mat-icon> Edit Profile
+            </button>
+            
+            <!-- Cancel Button -->
+            <button mat-button type="button" (click)="toggleEditMode()" class="btn-cancel" *ngIf="isEditMode">
+              Cancel
+            </button>
+
+            <!-- Save Button -->
+            <button mat-raised-button color="primary" type="submit" [disabled]="profileForm.invalid || isSaving" class="btn-primary" *ngIf="isEditMode">
+              <span *ngIf="!isSaving">Save Changes</span>
+              <mat-spinner diameter="20" *ngIf="isSaving"></mat-spinner>
+            </button>
+          </div>
+        </form>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

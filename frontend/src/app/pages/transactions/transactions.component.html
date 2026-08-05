@@ -1,0 +1,116 @@
+<div class="container">
+  <div class="page-header">
+    <h1>Transaction History</h1>
+    <p>View, search, and filter all transactions performed on your bank accounts.</p>
+  </div>
+
+  <!-- Filter and Search controls card -->
+  <mat-card class="premium-card filter-card">
+    <mat-card-content class="filter-controls-row">
+      <!-- Select Account -->
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Select Account</mat-label>
+        <mat-select [(ngModel)]="selectedAccountNumber" (selectionChange)="onAccountChange()">
+          <mat-option *ngFor="let acc of accounts" [value]="acc.accountNumber">
+            {{ acc.accountNumber }} - {{ acc.accountType }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Select Type Filter -->
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Transaction Type</mat-label>
+        <mat-select [(ngModel)]="filterType" (selectionChange)="applyFilters()">
+          <mat-option value="ALL">All Types</mat-option>
+          <mat-option value="DEPOSIT">Deposits</mat-option>
+          <mat-option value="WITHDRAW">Withdrawals</mat-option>
+          <mat-option value="TRANSFER">Transfers</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Text Search -->
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Search Reference / Description</mat-label>
+        <input matInput [(ngModel)]="searchText" (input)="applyFilters()" placeholder="e.g. Salary, Rent">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+
+      <!-- Reset -->
+      <button mat-stroked-button color="primary" (click)="resetFilters()" class="btn-reset">
+        Reset Filters
+      </button>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Table Card -->
+  <mat-card class="premium-card table-card">
+    <mat-card-content>
+      <div *ngIf="isLoadingTransactions" class="loading-box">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+
+      <div *ngIf="!isLoadingTransactions && dataSource.data.length === 0" class="no-tx-box">
+        <mat-icon class="no-tx-icon">receipt_long</mat-icon>
+        <p>No transactions match your search/filters or none have been recorded yet.</p>
+      </div>
+
+      <div class="table-container" *ngIf="!isLoadingTransactions && dataSource.data.length > 0">
+        <table mat-table [dataSource]="dataSource" matSort class="history-table">
+          
+          <!-- ID Column -->
+          <ng-container matColumnDef="transactionId">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+            <td mat-cell *matCellDef="let element">{{ element.transactionId }}</td>
+          </ng-container>
+
+          <!-- Reference Number -->
+          <ng-container matColumnDef="referenceNumber">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Reference</th>
+            <td mat-cell *matCellDef="let element" class="ref-text">{{ element.referenceNumber }}</td>
+          </ng-container>
+
+          <!-- Type -->
+          <ng-container matColumnDef="transactionType">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
+            <td mat-cell *matCellDef="let element">
+              <span class="type-badge" [ngClass]="element.transactionType.toLowerCase()">{{ element.transactionType }}</span>
+            </td>
+          </ng-container>
+
+          <!-- Amount -->
+          <ng-container matColumnDef="amount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Amount</th>
+            <td mat-cell *matCellDef="let element" [ngClass]="element.transactionType.toLowerCase() + '-amount'">
+              {{ element.amount | currency }}
+            </td>
+          </ng-container>
+
+          <!-- Description -->
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+            <td mat-cell *matCellDef="let element" class="desc-text">{{ element.description }}</td>
+          </ng-container>
+
+          <!-- Date -->
+          <ng-container matColumnDef="transactionDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+            <td mat-cell *matCellDef="let element">{{ element.transactionDate | date:'medium' }}</td>
+          </ng-container>
+
+          <!-- Status -->
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+            <td mat-cell *matCellDef="let element">
+              <span class="status-badge" [ngClass]="element.status.toLowerCase()">{{ element.status }}</span>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of transactions"></mat-paginator>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
