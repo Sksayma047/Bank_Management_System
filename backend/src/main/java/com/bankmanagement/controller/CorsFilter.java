@@ -17,8 +17,9 @@ public class CorsFilter implements Filter {
         HttpServletResponse resp = (HttpServletResponse) response;
         HttpServletRequest req = (HttpServletRequest) request;
 
-        // Allow Angular dev server to make API calls
-        resp.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
+        // Dynamic CORS configuration to allow Angular client (both local and deployed)
+        String origin = req.getHeader("Origin");
+        resp.setHeader("Access-Control-Allow-Origin", origin != null ? origin : "http://localhost:4200");
         resp.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
         resp.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With");
         resp.setHeader("Access-Control-Allow-Credentials", "true");
