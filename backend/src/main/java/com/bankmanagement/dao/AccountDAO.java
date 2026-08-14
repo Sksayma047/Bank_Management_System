@@ -23,7 +23,7 @@ public class AccountDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Database error looking up account by ID: " + e.getMessage(), e);
         }
         return null;
     }
@@ -40,7 +40,7 @@ public class AccountDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Database error looking up account by account number: " + e.getMessage(), e);
         }
         return null;
     }
@@ -58,7 +58,7 @@ public class AccountDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Database error looking up accounts by customer ID: " + e.getMessage(), e);
         }
         return accounts;
     }
@@ -85,7 +85,7 @@ public class AccountDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Database error saving account: " + e.getMessage(), e);
         }
         return null;
     }
@@ -100,8 +100,7 @@ public class AccountDAO {
             
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            throw new RuntimeException("Database error updating account balance: " + e.getMessage(), e);
         }
     }
 
@@ -127,8 +126,7 @@ public class AccountDAO {
             
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            throw new RuntimeException("Database error updating account status: " + e.getMessage(), e);
         }
     }
 
@@ -140,8 +138,7 @@ public class AccountDAO {
             ps.setInt(1, id);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            throw new RuntimeException("Database error deleting account: " + e.getMessage(), e);
         }
     }
 

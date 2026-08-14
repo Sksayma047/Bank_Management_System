@@ -22,7 +22,7 @@ public class CustomerDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Database error looking up customer by ID: " + e.getMessage(), e);
         }
         return null;
     }
@@ -39,7 +39,7 @@ public class CustomerDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Database error looking up customer by email: " + e.getMessage(), e);
         }
         return null;
     }
@@ -56,7 +56,7 @@ public class CustomerDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Database error looking up customer by phone: " + e.getMessage(), e);
         }
         return null;
     }
@@ -84,7 +84,7 @@ public class CustomerDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Database error saving customer: " + e.getMessage(), e);
         }
         return null;
     }
@@ -103,8 +103,7 @@ public class CustomerDAO {
             
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            throw new RuntimeException("Database error updating customer: " + e.getMessage(), e);
         }
     }
 
@@ -116,8 +115,7 @@ public class CustomerDAO {
             ps.setInt(1, id);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            throw new RuntimeException("Database error deleting customer: " + e.getMessage(), e);
         }
     }
 

@@ -21,7 +21,7 @@ public class TransactionDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Database error looking up transaction by ID: " + e.getMessage(), e);
         }
         return null;
     }
@@ -39,7 +39,7 @@ public class TransactionDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Database error looking up transactions by account ID: " + e.getMessage(), e);
         }
         return list;
     }
@@ -60,7 +60,7 @@ public class TransactionDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Database error saving transaction: " + e.getMessage(), e);
         }
         return null;
     }
