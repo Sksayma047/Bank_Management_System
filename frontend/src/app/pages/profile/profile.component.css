@@ -97,3 +97,12 @@
 .btn-cancel:hover {
   background-color: var(--primary-light) !important;
 }
+
+@media (max-width: 480px) {
+  .profile-header {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    gap: 12px;
+  }
+}

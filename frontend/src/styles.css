@@ -118,12 +118,26 @@ html, body {
     margin: 16px auto !important;
     padding: 12px !important;
   }
-  .premium-card {
+  .premium-card, .form-card, .profile-card {
     padding: 16px !important;
   }
   .table-container {
     overflow-x: auto;
     width: 100%;
     -webkit-overflow-scrolling: touch;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-actions, .profile-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .form-actions button, .profile-actions button {
+    width: 100%;
+    margin: 0 !important;
+    height: 44px !important; /* Touch-friendly height */
   }
 }

@@ -186,8 +186,26 @@
 }
 
 @media (max-width: 600px) {
+  .welcome-banner {
+    padding: 20px 16px;
+    margin-bottom: 16px;
+  }
+  .welcome-banner h1 {
+    font-size: 22px;
+  }
+  .welcome-banner p {
+    font-size: 14px;
+  }
   .actions-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .section-header h2 {
+    font-size: 18px;
+  }
+  .account-card {
+    padding: 16px;
   }
 }
 
