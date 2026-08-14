@@ -2,7 +2,7 @@
 <ng-container *ngIf="authService.isLoggedIn(); else anonymousLayout">
   <mat-sidenav-container class="sidenav-container">
     <!-- Sidebar -->
-    <mat-sidenav #sidenav mode="side" opened class="sidenav">
+    <mat-sidenav #sidenav [mode]="isMobile ? 'over' : 'side'" [opened]="!isMobile" class="sidenav">
       <div class="brand-section">
         <mat-icon class="brand-icon">account_balance</mat-icon>
         <span class="brand-name">Apex Bank</span>

@@ -91,3 +91,9 @@
 .active-link .mat-mdc-list-item-icon {
   color: #ffffff !important;
 }
+
+@media (max-width: 600px) {
+  .user-greeting {
+    display: none;
+  }
+}

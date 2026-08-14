@@ -108,3 +108,22 @@ html, body {
   --mdc-snackbar-container-color: var(--danger) !important;
   color: #fff !important;
 }
+
+/* Global Responsive Overrides */
+@media (max-width: 600px) {
+  .container {
+    padding: 16px;
+  }
+  .small-container {
+    margin: 16px auto !important;
+    padding: 12px !important;
+  }
+  .premium-card {
+    padding: 16px !important;
+  }
+  .table-container {
+    overflow-x: auto;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+  }
+}

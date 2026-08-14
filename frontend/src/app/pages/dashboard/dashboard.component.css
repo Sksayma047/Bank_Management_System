@@ -314,3 +314,9 @@
 
 .status-dot.success { color: var(--success); }
 .status-dot.failed { color: var(--danger); }
+
+.table-container {
+  overflow-x: auto;
+  width: 100%;
+  -webkit-overflow-scrolling: touch;
+}
